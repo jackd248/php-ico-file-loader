@@ -1,0 +1,27 @@
+parameters:
+	level: 8
+	paths:
+		- src
+		- tests
+	ignoreErrors:
+		# Test files - intentional patterns
+		- '#Method .+Test::.+ has parameter .+ with no type specified#'
+		- '#Method .+Test::.+ has no return type specified#'
+		- '#Call to method PHPUnit\\Framework\\Assert::.+ will always evaluate to true#'
+		# Test files - file_get_contents can return false but tests use fixed paths
+		- '#Parameter .+ expects string, string\|false given#'
+		- '#Cannot access offset .+ on array\|false#'
+		# Test files - intentional array access without null checks in tests
+		-
+			message: '#Cannot call method .+ on .+\|null#'
+			path: tests/
+		-
+			message: '#Parameter .+ expects .+, .+\|null given#'
+			path: tests/
+		-
+			message: '#Cannot access property .+ on .+\|null#'
+			path: tests/
+
+includes:
+	- vendor/phpstan/phpstan-symfony/extension.neon
+	- vendor/phpstan/phpstan-phpunit/extension.neon

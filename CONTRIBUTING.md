@@ -1,35 +1,75 @@
 # Contributing
 
-Contributions are **welcome** and will be fully **credited**.
+Thank you for considering contributing to this project! Every contribution is welcome and helps improve the quality of the project. To ensure a smooth process and maintain high code quality, please follow the steps below.
 
-We accept contributions via Pull Requests on [Github](https://github.com/lordelph/iconfileloader).
+## Requirements
 
+- PHP >= 8.1
+- Composer >= 2.0
 
-## Pull Requests
+## Preparation
 
-- **[PSR-2 Coding Standard](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-2-coding-style-guide.md)** - 
-  The developer dependencies includes [phpcs](http://pear.php.net/package/PHP_CodeSniffer) so
-  it is very easy ensure compliance. Simply run `composer check-style` . Most issues 
-  aside from long lines can be fixed with `composer fix-style`
+```bash
+# Clone repository
+git clone https://github.com/jackd248/php-ico-file-loader.git
+cd php-ico-file-loader
 
-- **Add tests!** - Your patch won't be accepted if it doesn't have tests.
-
-- **Document any change in behaviour** - Make sure the README and any other relevant documentation are kept up-to-date.
-
-- **Consider our release cycle** - We try to follow semver. Randomly breaking public APIs is not an option.
-
-- **Create topic branches** - Don't ask us to pull from your master branch.
-
-- **One pull request per feature** - If you want to do more than one thing, send multiple pull requests.
-
-- **Send coherent history** - Make sure each individual commit in your pull request is meaningful. If you had to make multiple intermediate commits while developing, please squash them before submitting.
-
-
-## Running Tests
-
-``` bash
-$ composer test
+# Install dependencies
+composer install
 ```
 
+## Run linters
 
-**Happy coding**!
+```bash
+# All linters
+composer lint
+
+# Specific linters
+composer lint:composer
+composer lint:editorconfig
+composer lint:php
+
+# Fix all CGL issues
+composer fix
+
+# Fix specific CGL issues
+composer fix:composer
+composer fix:editorconfig
+composer fix:php
+```
+
+## Run static code analysis
+
+```bash
+# All static code analyzers
+composer sca
+
+# Specific static code analyzers
+composer sca:php
+```
+
+## Run tests
+
+```bash
+# All tests
+composer test
+
+# All tests with code coverage
+composer test:coverage
+```
+
+### Test reports
+
+Code coverage reports are saved in .build/coverage. You can open the latest HTML report as follows:
+
+```bash
+open .build/coverage/html/index.html
+```
+
+## Submit a pull request
+
+After completing your work, **open a pull request** and provide a description of your changes. Ideally, your PR should reference an issue that explains the problem you are addressing.
+
+All mentioned code quality tools will run automatically on every pull request for all supported PHP versions. For more details, see the relevant [workflows][1].
+
+[1]: .github/workflows

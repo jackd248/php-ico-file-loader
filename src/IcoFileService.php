@@ -1,40 +1,45 @@
 <?php
 
-namespace Elphin\IcoFileLoader;
+declare(strict_types=1);
+
+/*
+ * This file is part of the "php-ico-file-loader" Composer package.
+ *
+ * (c) Konrad Michalik <hej@konradmichalik.dev>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+namespace KonradMichalik\PhpIcoFileLoader;
+
+use DomainException;
+use Exception;
+use InvalidArgumentException;
+use KonradMichalik\PhpIcoFileLoader\Model\{Icon, IconImage};
+use KonradMichalik\PhpIcoFileLoader\Parser\{IcoParser, ParserInterface};
+use KonradMichalik\PhpIcoFileLoader\Renderer\{GdRenderer, RendererInterface};
+
+use function sprintf;
 
 /**
- * Provides a service for loading .ico files from files or from binary strings
- * If fopen wrappers are enabled, you can load from a URL also
+ * IcoFileService.
+ *
+ * @author Konrad Michalik <hej@konradmichalik.dev>
+ * @license MIT
  */
 class IcoFileService
 {
     /**
-     * @var ParserInterface
-     */
-    protected $parser;
-
-    /**
-     * @var RendererInterface
-     */
-    protected $renderer;
-
-    /**
-     * IcoFileService constructor
+     * IcoFileService constructor.
      *
      * You can inject alternative implementations of the renderer or parser, but for most
      * typical uses, you can accept the defaults.
-     *
-     * @param RendererInterface|null $renderer
-     * @param ParserInterface|null $parser
      */
-    public function __construct(RendererInterface $renderer = null, ParserInterface $parser = null)
-    {
-        $this->parser = $parser ?: new IcoParser();
-        $this->renderer = $renderer ?: new GdRenderer();
-    }
+    public function __construct(protected RendererInterface $renderer = new GdRenderer(), protected ParserInterface $parser = new IcoParser()) {}
 
     /**
-     * This is a useful one-stop function for obtaining the best possible icon of a particular size from an .ico file
+     * This is a useful one-stop function for obtaining the best possible icon of a particular size from an .ico file.
      *
      * As icons are often hand-crafted to look good at particular sizes, this will try to use the best quality image
      * in the icon at the required size. If it can't be found, then it will resize the largest icon it can find.
@@ -42,54 +47,60 @@ class IcoFileService
      * This will either return a valid image, or will throw an \InvalidArgumentException in the event of the file
      * being unreadable.
      *
-     * @param string $dataOrFile Either a filename to a .ico file, or binary data from an .ico file in a string
-     * @param integer $w Desired width. The class tries to locate the best quality image at this size, but
-     *                            if not found, the largest available icon will be used and resized to fit.
-     * @param integer $h Desired height - as icons are usually square, this should be same as $w.
-     * @param array $opts Array of renderer options. The built in renderer supports an optional 'background'
-     *                            elemen in this array. Normally, the result will use alpha transparency, but you can
-     *                            pass a hex colour to choose the colour of the transparent area instead, e.g.
-     *                            ['background=>'#ffffff'] for a white background.
-     * @return mixed              The built in renderer will return a gd image resource, which you could save with
-     *                            the gd function imagepng(), for example. If you swap in an alternative renderer,
-     *                            the result is whatever that renderer returns.
-     * @throws \DomainException if icon does not contain any images.
-     * @throws \InvalidArgumentException if file is not found or is invalid.
+     * @param string                    $dataOrFile Either a filename to a .ico file, or binary data from an .ico file in a string
+     * @param int                       $w          Desired width. The class tries to locate the best quality image at this size, but
+     *                                              if not found, the largest available icon will be used and resized to fit.
+     * @param int                       $h          desired height - as icons are usually square, this should be same as $w
+     * @param array<string, mixed>|null $opts       Array of renderer options. The built in renderer supports an optional 'background'
+     *                                              element in this array. Normally, the result will use alpha transparency, but you can
+     *                                              pass a hex colour to choose the colour of the transparent area instead, e.g.
+     *                                              ['background=>'#ffffff'] for a white background.
+     *
+     * @return mixed The built in renderer will return a gd image resource, which you could save with
+     *               the gd function imagepng(), for example. If you swap in an alternative renderer,
+     *               the result is whatever that renderer returns.
+     *
+     * @throws DomainException          if icon does not contain any images
+     * @throws InvalidArgumentException if file is not found or is invalid
      */
-    public function extractIcon($dataOrFile, $w, $h, array $opts = null)
+    public function extractIcon(string $dataOrFile, int $w, int $h, ?array $opts = null): mixed
     {
         $icon = $this->from($dataOrFile);
         $image = $icon->findBestForSize($w, $h);
-        if (!$image) {
-            //nothing at our required size, so we'll find the highest quality icon
+        if (null === $image) {
+            // nothing at our required size, so we'll find the highest quality icon
             $image = $icon->findBest();
+            if (null === $image) {
+                throw new DomainException('Icon does not contain any images.');
+            }
         }
-        if (!$image) {
-            throw new \DomainException('Icon does not contain any images.');
-        }
+
         return $this->renderImage($image, $w, $h, $opts);
     }
 
     /**
      * Renders an IconImage at a desired width and height.
      *
-     * @param IconImage $image Image obtained from an Icon object.
-     * @param integer $w Desired width - if null, width of IconImage is used.
-     * @param integer $h Desired height - if null, height of IconImage is used.
-     * @param array $opts Array of renderer options. The built in renderer supports an optional 'background'
-     *                            element in this array. Normally, the result will use alpha transparency, but you can
-     *                            pass a hex colour to choose the colour of the transparent area instead, e.g.
-     *                            ['background=>'#ffffff'] for a white background.
-     * @return mixed              The built in renderer will return a gd image resource, which you could save with
-     *                            the gd function imagepng(), for example. If you swap in an alternative renderer,
-     *                            the result is whatever that renderer returns.
-     * @throws \InvalidArgumentException if IconImage or options are invalid.
+     * @param IconImage                 $image image obtained from an Icon object
+     * @param int|null                  $w     desired width - if null, width of IconImage is used
+     * @param int|null                  $h     desired height - if null, height of IconImage is used
+     * @param array<string, mixed>|null $opts  Array of renderer options. The built in renderer supports an optional 'background'
+     *                                         element in this array. Normally, the result will use alpha transparency, but you can
+     *                                         pass a hex colour to choose the colour of the transparent area instead, e.g.
+     *                                         ['background=>'#ffffff'] for a white background.
+     *
+     * @return mixed The built in renderer will return a gd image resource, which you could save with
+     *               the gd function imagepng(), for example. If you swap in an alternative renderer,
+     *               the result is whatever that renderer returns.
+     *
+     * @throws InvalidArgumentException if IconImage or options are invalid
      */
-    public function renderImage(IconImage $image, $w = null, $h = null, array $opts = null)
+    public function renderImage(IconImage $image, ?int $w = null, ?int $h = null, ?array $opts = null): mixed
     {
-        $opts = is_array($opts) ? $opts : [];
+        $opts ??= [];
         $opts['w'] = $w;
         $opts['h'] = $h;
+
         return $this->renderer->render($image, $opts);
     }
 
@@ -99,15 +110,16 @@ class IcoFileService
      * This is a useful lower level member which can be used to inspect an icon before
      * rendering a particular image within it with renderImage.
      *
-     * @param string $dataOrFile Either filename or binary data.
-     * @return Icon
-     * @throws \InvalidArgumentException if file is not found or invalid
+     * @param string $dataOrFile either filename or binary data
+     *
+     * @throws InvalidArgumentException if file is not found or invalid
      */
-    public function from($dataOrFile)
+    public function from(string $dataOrFile): Icon
     {
         if ($this->parser->isSupportedBinaryString($dataOrFile)) {
             return $this->parser->parse($dataOrFile);
         }
+
         return $this->fromFile($dataOrFile);
     }
 
@@ -115,19 +127,19 @@ class IcoFileService
      * Loads icon from file.
      *
      * @param string $file filename or URL (if fopen wrappers installed)
-     * @return Icon
-     * @throws \InvalidArgumentException if file is not found or invalid
+     *
+     * @throws InvalidArgumentException if file is not found or invalid
      */
-    public function fromFile($file)
+    public function fromFile(string $file): Icon
     {
         try {
-            $data = file_get_contents($file);
-            if ($data !== false) {
+            $data = @file_get_contents($file);
+            if (false !== $data) {
                 return $this->parser->parse($data);
             }
-            throw new \InvalidArgumentException("file could not be loaded");
-        } catch (\Exception $e) {
-            throw new \InvalidArgumentException("file could not be loaded (" . $e->getMessage() . ")");
+            throw new InvalidArgumentException('File could not be loaded.');
+        } catch (Exception $e) {
+            throw new InvalidArgumentException(sprintf('File could not be loaded: %s', $e->getMessage()), 0, $e);
         }
     }
 
@@ -135,10 +147,10 @@ class IcoFileService
      * Loads icon from string.
      *
      * @param string $data binary data string containing a .ico file
-     * @return Icon
-     * @throws \InvalidArgumentException if file is not found or invalid
+     *
+     * @throws InvalidArgumentException if file is not found or invalid
      */
-    public function fromString($data)
+    public function fromString(string $data): Icon
     {
         return $this->parser->parse($data);
     }
