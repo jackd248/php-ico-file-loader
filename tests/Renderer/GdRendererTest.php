@@ -15,8 +15,8 @@ namespace KonradMichalik\PhpIcoFileLoader\Tests\Renderer;
 
 use InvalidArgumentException;
 use Iterator;
-use KonradMichalik\PhpIcoFileLoader\IcoTestCase;
 use KonradMichalik\PhpIcoFileLoader\Renderer\GdRenderer;
+use KonradMichalik\PhpIcoFileLoader\Tests\IcoTestCase;
 
 /**
  * GdRendererTest.

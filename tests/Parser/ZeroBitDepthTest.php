@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace KonradMichalik\PhpIcoFileLoader\Tests\Parser;
 
-use KonradMichalik\PhpIcoFileLoader\IcoTestCase;
 use KonradMichalik\PhpIcoFileLoader\Renderer\GdRenderer;
+use KonradMichalik\PhpIcoFileLoader\Tests\IcoTestCase;
 
 /**
  * ZeroBitDepthTest.

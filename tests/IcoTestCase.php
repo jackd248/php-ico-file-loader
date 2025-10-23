@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace KonradMichalik\PhpIcoFileLoader;
+namespace KonradMichalik\PhpIcoFileLoader\Tests;
 
 use GdImage;
 use KonradMichalik\PhpIcoFileLoader\Model\Icon;

@@ -11,10 +11,11 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace KonradMichalik\PhpIcoFileLoader;
+namespace KonradMichalik\PhpIcoFileLoader\Tests;
 
 use DomainException;
 use InvalidArgumentException;
+use KonradMichalik\PhpIcoFileLoader\IcoFileService;
 
 use function count;
 

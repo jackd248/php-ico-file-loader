@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace KonradMichalik\PhpIcoFileLoader\Tests\Parser;
 
-use KonradMichalik\PhpIcoFileLoader\IcoTestCase;
 use KonradMichalik\PhpIcoFileLoader\Model\Icon;
 use KonradMichalik\PhpIcoFileLoader\Parser\IcoParser;
+use KonradMichalik\PhpIcoFileLoader\Tests\IcoTestCase;
 
 /**
  * IcoParserTest.

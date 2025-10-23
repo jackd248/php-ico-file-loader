@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace KonradMichalik\PhpIcoFileLoader\Tests\Model;
 
 use InvalidArgumentException;
-use KonradMichalik\PhpIcoFileLoader\IcoTestCase;
 use KonradMichalik\PhpIcoFileLoader\Model\{Icon, IconImage};
+use KonradMichalik\PhpIcoFileLoader\Tests\IcoTestCase;
 
 /**
  * IconTest.
