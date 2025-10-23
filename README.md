@@ -1,6 +1,6 @@
 <div align="center">
 
-# Php Ico File Loeader
+# Php Ico File Loader
 
 [![Coverage](https://img.shields.io/coverallsCoverage/github/jackd248/php-ico-file-loader?logo=coveralls)](https://coveralls.io/github/jackd248/php-ico-file-loader)
 [![CGL](https://img.shields.io/github/actions/workflow/status/jackd248/php-ico-file-loader/cgl.yml?label=cgl&logo=github)](https://github.com/jackd248/php-ico-file-loader/actions/workflows/cgl.yml)
