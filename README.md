@@ -9,20 +9,20 @@
 
 </div>
 
-This package provides a means to load and convert .ico files in a PHP application. 
-It has no dependencies apart from [gd](http://php.net/manual/en/book.image.php) 
-for rendering.
+This package enables loading and converting `.ico` files within PHP applications.
+It requires no dependencies except for [gd](http://php.net/manual/en/book.image.php) for image rendering.
 
-The package has unit tests which verify support for 1bit, 4bit, 8bit, 24bit and 32bit
-.ico files, and the newer form of .ico files which can included embedded PNG files.
 
-## Installation
+## 🔥 Installation
+
+[![Packagist](https://img.shields.io/packagist/v/konradmichalik/php-ico-file-loader?label=version&logo=packagist)](https://packagist.org/packages/konradmichalik/php-ico-file-loader)
+[![Packagist Downloads](https://img.shields.io/packagist/dt/konradmichalik/php-ico-file-loader?color=brightgreen)](https://packagist.org/packages/konradmichalik/php-ico-file-loader)
 
 ```bash
 composer require konradmichalik/php-ico-file-loader
 ```
 
-## Usage
+## ⚡ Usage
 
 ```php
 $loader = new KonradMichalik\PhpIcoFileLoeader\Parser\IcoFileService;
@@ -41,4 +41,4 @@ Please have a look at [`CONTRIBUTING.md`](CONTRIBUTING.md).
 
 ## ⭐ License
 
-This project is licensed under [MIT](LICENSE.md).
+This project is licensed under [MIT](LICENSE).
