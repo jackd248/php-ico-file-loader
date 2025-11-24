@@ -23,7 +23,7 @@ use KonradMichalik\PhpIcoFileLoader\Tests\IcoTestCase;
  * @author Konrad Michalik <hej@konradmichalik.dev>
  * @license MIT
  */
-class IconTest extends IcoTestCase
+final class IconTest extends IcoTestCase
 {
     public function testArrayInterface(): void
     {

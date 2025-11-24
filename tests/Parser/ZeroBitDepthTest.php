@@ -22,7 +22,7 @@ use KonradMichalik\PhpIcoFileLoader\Tests\IcoTestCase;
  * @author Konrad Michalik <hej@konradmichalik.dev>
  * @license MIT
  */
-class ZeroBitDepthTest extends IcoTestCase
+final class ZeroBitDepthTest extends IcoTestCase
 {
     public function testZeroBitDepthIcon(): void
     {

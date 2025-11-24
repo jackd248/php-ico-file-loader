@@ -25,7 +25,7 @@ use function count;
  * @author Konrad Michalik <hej@konradmichalik.dev>
  * @license MIT
  */
-class IcoFileServiceTest extends IcoTestCase
+final class IcoFileServiceTest extends IcoTestCase
 {
     public function testExtract(): void
     {

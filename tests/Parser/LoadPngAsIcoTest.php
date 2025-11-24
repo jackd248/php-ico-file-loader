@@ -22,7 +22,7 @@ use KonradMichalik\PhpIcoFileLoader\Tests\IcoTestCase;
  * @author Konrad Michalik <hej@konradmichalik.dev>
  * @license MIT
  */
-class LoadPngAsIcoTest extends IcoTestCase
+final class LoadPngAsIcoTest extends IcoTestCase
 {
     public function testLoadPngAsIcoTest(): void
     {

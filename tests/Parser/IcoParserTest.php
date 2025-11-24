@@ -23,7 +23,7 @@ use KonradMichalik\PhpIcoFileLoader\Tests\IcoTestCase;
  * @author Konrad Michalik <hej@konradmichalik.dev>
  * @license MIT
  */
-class IcoParserTest extends IcoTestCase
+final class IcoParserTest extends IcoTestCase
 {
     public function test32bitIcon(): void
     {
