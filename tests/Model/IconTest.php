@@ -25,7 +25,7 @@ use KonradMichalik\PhpIcoFileLoader\Tests\IcoTestCase;
  */
 class IconTest extends IcoTestCase
 {
-    public function testArrayInterface()
+    public function testArrayInterface(): void
     {
         $icon = new Icon();
         $icon[] = new IconImage([]);
@@ -41,7 +41,7 @@ class IconTest extends IcoTestCase
         $this->assertCount(1, $icon);
     }
 
-    public function testInvalidAdd()
+    public function testInvalidAdd(): void
     {
         $this->expectException(InvalidArgumentException::class);
         $icon = new Icon();

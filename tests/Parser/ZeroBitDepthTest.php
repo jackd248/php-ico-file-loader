@@ -24,7 +24,7 @@ use KonradMichalik\PhpIcoFileLoader\Tests\IcoTestCase;
  */
 class ZeroBitDepthTest extends IcoTestCase
 {
-    public function testZeroBitDepthIcon()
+    public function testZeroBitDepthIcon(): void
     {
         // first, let's be sure our test file has got a zero for the bitDepth in the ICONDIRENTRY
         $data = file_get_contents('./tests/assets/zero-bit-depth-sample.ico');

@@ -24,7 +24,7 @@ use KonradMichalik\PhpIcoFileLoader\Tests\IcoTestCase;
  */
 class LoadPngAsIcoTest extends IcoTestCase
 {
-    public function testLoadPngAsIcoTest()
+    public function testLoadPngAsIcoTest(): void
     {
         // first, let's be sure our test file is a PNG
         $signature = unpack('LFourCC', file_get_contents('./tests/assets/png-as-ico-sample.ico'));
