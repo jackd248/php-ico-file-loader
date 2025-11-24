@@ -24,7 +24,7 @@ use KonradMichalik\PhpIcoFileLoader\Tests\IcoTestCase;
  * @author Konrad Michalik <hej@konradmichalik.dev>
  * @license MIT
  */
-class GdRendererTest extends IcoTestCase
+final class GdRendererTest extends IcoTestCase
 {
     public static function greenBackgroundProvider(): Iterator
     {
