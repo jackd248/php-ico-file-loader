@@ -37,7 +37,7 @@ class GdRendererTest extends IcoTestCase
     }
 
     #[\PHPUnit\Framework\Attributes\DataProvider('greenBackgroundProvider')]
-    public function testWithGreenBackground($srcIconFile, $imageIndex, $expectedFormat, $expectedPngFile)
+    public function testWithGreenBackground($srcIconFile, $imageIndex, $expectedFormat, $expectedPngFile): void
     {
         $renderer = new GdRenderer();
         $icon = $this->parseIcon($srcIconFile);
@@ -49,7 +49,7 @@ class GdRendererTest extends IcoTestCase
         $this->assertImageLooksLike($expectedPngFile, $im);
     }
 
-    public function testPng()
+    public function testPng(): void
     {
         $renderer = new GdRenderer();
         $icon = $this->parseIcon('32bit-png-sample.ico');
@@ -65,7 +65,7 @@ class GdRendererTest extends IcoTestCase
         $this->assertImageLooksLike('32bit-png-green-expected.png', $im);
     }
 
-    public function testInvalidBackground()
+    public function testInvalidBackground(): void
     {
         $this->expectException(InvalidArgumentException::class);
 
